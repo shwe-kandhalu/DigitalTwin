@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - Digital Twin</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f8f9fa;
+      padding: 1rem;
+      box-sizing: border-box;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding: 0 0.5rem;
+    }
+    
+    .greeting {
+      color: #333;
+    }
+    
+    .greeting h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    
+    .greeting p {
+      margin: 0;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    .profile-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #6c5ce7;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .metric-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      text-align: center;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .metric-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .metric-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .metric-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0;
+      color: #333;
+    }
+    
+    .metric-label {
+      font-size: 0.8rem;
+      color: #666;
+      margin: 0;
+    }
+    
+    .metric-change {
+      font-size: 0.7rem;
+      margin-top: 0.5rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 12px;
+      display: inline-block;
+    }
+    
+    .positive {
+      background: #e8f5e8;
+      color: #2e7d32;
+    }
+    
+    .negative {
+      background: #ffebee;
+      color: #c62828;
+    }
+    
+    .actions-section {
+      margin-bottom: 2rem;
+    }
+    
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 1rem;
+    }
+    
+    .action-buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+    }
+    
+    .action-btn {
+      background: white;
+      border: none;
+      padding: 1.5rem;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+    
+    .action-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    .action-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    
+    .action-text {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #333;
+      margin: 0;
+    }
+    
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      display: flex;
+      justify-content: space-around;
+      padding: 1rem;
+      box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .nav-item {
+      text-align: center;
+      color: #666;
+      text-decoration: none;
+      padding: 0.5rem;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-item.active {
+      color: #6c5ce7;
+      background: #f3f2ff;
+    }
+    
+    .nav-icon {
+      font-size: 1.2rem;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+    
+    .nav-label {
+      font-size: 0.7rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="greeting">
+      <h1>Good morning, Julia</h1>
+      <p>How are you feeling today?</p>
+    </div>
+    <button class="profile-btn" onclick="window.location.href='settings.html'">👤</button>
+  </div>
+  
+  <div class="metrics-grid">
+    <div class="metric-card" onclick="window.location.href='wellness-index.html'">
+      <div class="metric-icon">💚</div>
+      <h2 class="metric-value">85</h2>
+      <p class="metric-label">Wellness Index</p>
+      <span class="metric-change positive">↗ +5 from yesterday</span>
+    </div>
+    
+    <div class="metric-card" onclick="window.location.href='voice-analysis.html'">
+      <div class="metric-icon">🎤</div>
+      <h2 class="metric-value">Good</h2>
+      <p class="metric-label">Voice Health</p>
+      <span class="metric-change positive">↗ Improving</span>
+    </div>
+    
+    <div class="metric-card" onclick="window.location.href='cough-tracking.html'">
+      <div class="metric-icon">🫁</div>
+      <h2 class="metric-value">3</h2>
+      <p class="metric-label">Cough Episodes</p>
+      <span class="metric-change negative">↗ +1 today</span>
+    </div>
+    
+    <div class="metric-card" onclick="window.location.href='respiratory-rate.html'">
+      <div class="metric-icon">💨</div>
+      <h2 class="metric-value">16</h2>
+      <p class="metric-label">Respiratory Rate</p>
+      <span class="metric-change positive">↗ Normal range</span>
+    </div>
+  </div>
+  
+  <div class="actions-section">
+    <h2 class="section-title">Quick Actions</h2>
+    <div class="action-buttons">
+      <button class="action-btn" onclick="window.location.href='voice-analysis.html'">
+        <span class="action-icon">🎙️</span>
+        <p class="action-text">Voice Check</p>
+      </button>
+      
+      <button class="action-btn" onclick="window.location.href='cough-tracking.html'">
+        <span class="action-icon">📊</span>
+        <p class="action-text">Log Symptoms</p>
+      </button>
+      
+      <button class="action-btn" onclick="window.location.href='respiratory-rate.html'">
+        <span class="action-icon">🫁</span>
+        <p class="action-text">Breathing Test</p>
+      </button>
+      
+      <button class="action-btn" onclick="window.location.href='settings.html'">
+        <span class="action-icon">⚙️</span>
+        <p class="action-text">Settings</p>
+      </button>
+    </div>
+  </div>
+  
+  <div style="height: 100px;"></div>
+  
+  <nav class="bottom-nav">
+    <a href="dashboard.html" class="nav-item active">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">Home</span>
+    </a>
+    <a href="wellness-index.html" class="nav-item">
+      <span class="nav-icon">📊</span>
+      <span class="nav-label">Metrics</span>
+    </a>
+    <a href="voice-analysis.html" class="nav-item">
+      <span class="nav-icon">🎤</span>
+      <span class="nav-label">Voice</span>
+    </a>
+    <a href="settings.html" class="nav-item">
+      <span class="nav-icon">⚙️</span>
+      <span class="nav-label">Settings</span>
+    </a>
+  </nav>
+</body>
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wellness Index - Digital Twin</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f8f9fa;
+      padding: 1rem;
+      box-sizing: border-box;
+      min-height: 100vh;
+    }
+    
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding: 0.5rem 0;
+    }
+    
+    .back-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      margin-right: 1rem;
+      color: #333;
+    }
+    
+    .header-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #333;
+      margin: 0;
+    }
+    
+    .score-card {
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+      color: white;
+      padding: 2rem;
+      border-radius: 20px;
+      text-align: center;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 30px rgba(76, 175, 80, 0.3);
+    }
+    
+    .score-value {
+      font-size: 4rem;
+      font-weight: 700;
+      margin: 0;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .score-label {
+      font-size: 1.2rem;
+      margin: 0.5rem 0;
+      opacity: 0.9;
+    }
+    
+    .score-change {
+      background: rgba(255,255,255,0.2);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      display: inline-block;
+      margin-top: 1rem;
+    }
+    
+    .metrics-breakdown {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+    
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 1.5rem;
+    }
+    
+    .metric-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .metric-item:last-child {
+      border-bottom: none;
+    }
+    
+    .metric-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .metric-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+    
+    .voice-icon {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+    
+    .sleep-icon {
+      background: #f3e5f5;
+      color: #7b1fa2;
+    }
+    
+    .activity-icon {
+      background: #fff3e0;
+      color: #f57c00;
+    }
+    
+    .stress-icon {
+      background: #ffebee;
+      color: #d32f2f;
+    }
+    
+    .metric-details h4 {
+      margin: 0;
+      font-size: 1rem;
+      color: #333;
+    }
+    
+    .metric-details p {
+      margin: 0;
+      font-size: 0.8rem;
+      color: #666;
+    }
+    
+    .metric-score {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #4CAF50;
+    }
+    
+    .chart-container {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+    
+    .chart-placeholder {
+      height: 200px;
+      background: linear-gradient(135deg, #e8f5e8, #f0f8f0);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #4CAF50;
+      font-size: 1rem;
+      text-align: center;
+    }
+    
+    .recommendations {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 5rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+    
+    .recommendation-item {
+      background: #f8f9fa;
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      border-left: 4px solid #4CAF50;
+    }
+    
+    .recommendation-item:last-child {
+      margin-bottom: 0;
+    }
+    
+    .recommendation-item h4 {
+      margin: 0 0 0.5rem 0;
+      color: #333;
+      font-size: 0.9rem;
+    }
+    
+    .recommendation-item p {
+      margin: 0;
+      color: #666;
+      font-size: 0.8rem;
+      line-height: 1.4;
+    }
+    
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      display: flex;
+      justify-content: space-around;
+      padding: 1rem;
+      box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .nav-item {
+      text-align: center;
+      color: #666;
+      text-decoration: none;
+      padding: 0.5rem;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-item.active {
+      color: #6c5ce7;
+      background: #f3f2ff;
+    }
+    
+    .nav-icon {
+      font-size: 1.2rem;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+    
+    .nav-label {
+      font-size: 0.7rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <button class="back-btn" onclick="window.location.href='dashboard.html'">←</button>
+    <h1 class="header-title">Wellness Index</h1>
+  </div>
+  
+  <div class="score-card">
+    <h2 class="score-value">85</h2>
+    <p class="score-label">Overall Wellness Score</p>
+    <span class="score-change">↗ +5 points from yesterday</span>
+  </div>
+  
+  <div class="metrics-breakdown">
+    <h3 class="section-title">Health Metrics Breakdown</h3>
+    
+    <div class="metric-item">
+      <div class="metric-info">
+        <div class="metric-icon voice-icon">🎤</div>
+        <div class="metric-details">
+          <h4>Voice Health</h4>
+          <p>Vocal patterns analysis</p>
+        </div>
+      </div>
+      <span class="metric-score">92/100</span>
+    </div>
+    
+    <div class="metric-item">
+      <div class="metric-info">
+        <div class="metric-icon sleep-icon">😴</div>
+        <div class="metric-details">
+          <h4>Sleep Quality</h4>
+          <p>7.5 hours last night</p>
+        </div>
+      </div>
+      <span class="metric-score">88/100</span>
+    </div>
+    
+    <div class="metric-item">
+      <div class="metric-info">
+        <div class="metric-icon activity-icon">🏃</div>
+        <div class="metric-details">
+          <h4>Activity Level</h4>
+          <p>8,500 steps today</p>
+        </div>
+      </div>
+      <span class="metric-score">75/100</span>
+    </div>
+    
+    <div class="metric-item">
+      <div class="metric-info">
+        <div class="metric-icon stress-icon">😌</div>
+        <div class="metric-details">
+          <h4>Stress Level</h4>
+          <p>Based on voice analysis</p>
+        </div>
+      </div>
+      <span class="metric-score">82/100</span>
+    </div>
+  </div>
+  
+  <div class="chart-container">
+    <h3 class="section-title">7-Day Trend</h3>
+    <div class="chart-placeholder">
+      📈 Your wellness score has improved<br>
+      by 12 points this week!
+    </div>
+  </div>
+  
+  <div class="recommendations">
+    <h3 class="section-title">Personalized Recommendations</h3>
+    
+    <div class="recommendation-item">
+      <h4>💧 Increase Water Intake</h4>
+      <p>Your voice analysis suggests mild dehydration. Aim for 8-10 glasses of water today.</p>
+    </div>
+    
+    <div class="recommendation-item">
+      <h4>🧘 Try Breathing Exercises</h4>
+      <p>5 minutes of deep breathing can improve your stress score and respiratory health.</p>
+    </div>
+    
+    <div class="recommendation-item">
+      <h4>🚶 More Movement</h4>
+      <p>You're close to your step goal! A 10-minute walk would boost your activity score.</p>
+    </div>
+  </div>
+  
+  <nav class="bottom-nav">
+    <a href="dashboard.html" class="nav-item">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">Home</span>
+    </a>
+    <a href="wellness-index.html" class="nav-item active">
+      <span class="nav-icon">📊</span>
+      <span class="nav-label">Metrics</span>
+    </a>
+    <a href="voice-analysis.html" class="nav-item">
+      <span class="nav-icon">🎤</span>
+      <span class="nav-label">Voice</span>
+    </a>
+    <a href="settings.html" class="nav-item">
+      <span class="nav-icon">⚙️</span>
+      <span class="nav-label">Settings</span>
+    </a>
+  </nav>
+</body>
+</html>

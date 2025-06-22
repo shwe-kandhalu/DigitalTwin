@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Voice Analysis - Digital Twin</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f8f9fa;
+      padding: 1rem;
+      box-sizing: border-box;
+      min-height: 100vh;
+    }
+    
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding: 0.5rem 0;
+    }
+    
+    .back-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      margin-right: 1rem;
+      color: #333;
+    }
+    
+    .header-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #333;
+      margin: 0;
+    }
+    
+    .recording-card {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 2rem;
+      border-radius: 20px;
+      text-align: center;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+    }
+    
+    .mic-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      margin: 0 auto 1rem auto;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: 3px solid rgba(255,255,255,0.3);
+    }
+    
+    .mic-icon:hover {
+      background: rgba(255,255,255,0.3);
+      transform: scale(1.05);
+    }
+    
+    .mic-icon.recording {
+      background: #ff4757;
+      animation: pulse 1.5s infinite;
+      border-color: rgba(255,255,255,0.8);
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    
+    .recording-status {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    
+    .recording-instruction {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      margin-bottom: 1rem;
+    }
+    
+    .timer {
+      font-size: 2rem;
+      font-weight: 300;
+      margin: 1rem 0;
+      font-family: 'Courier New', monospace;
+    }
+    
+    .analysis-results {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      display: none;
+    }
+    
+    .analysis-results.show {
+      display: block;
+      animation: slideUp 0.5s ease;
+    }
+    
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 1.5rem;
+    }
+    
+    .health-indicator {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      border-left: 4px solid #4CAF50;
+    }
+    
+    .indicator-info h4 {
+      margin: 0;
+      color: #333;
+      font-size: 1rem;
+    }
+    
+    .indicator-info p {
+      margin: 0;
+      color: #666;
+      font-size: 0.8rem;
+    }
+    
+    .indicator-value {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #4CAF50;
+    }
+    
+    .warning {
+      border-left-color: #ff9800;
+    }
+    
+    .warning .indicator-value {
+      color: #ff9800;
+    }
+    
+    .concern {
+      border-left-color: #f44336;
+    }
+    
+    .concern .indicator-value {
+      color: #f44336;
+    }
+    
+    .voice-tips {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 5rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+    
+    .tip-item {
+      background: #e3f2fd;
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    
+    .tip-item:last-child {
+      margin-bottom: 0;
+    }
+    
+    .tip-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    
+    .tip-content h4 {
+      margin: 0 0 0.5rem 0;
+      color: #1976d2;
+      font-size: 0.9rem;
+    }
+    
+    .tip-content p {
+      margin: 0;
+      color: #333;
+      font-size: 0.8rem;
+      line-height: 1.4;
+    }
+    
+    .history-section {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+    
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .history-item:last-child {
+      border-bottom: none;
+    }
+    
+    .history-date {
+      color: #666;
+      font-size: 0.8rem;
+    }
+    
+    .history-score {
+      font-weight: 600;
+      color: #4CAF50;
+    }
+    
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      display: flex;
+      justify-content: space-around;
+      padding: 1rem;
+      box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .nav-item {
+      text-align: center;
+      color: #666;
+      text-decoration: none;
+      padding: 0.5rem;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-item.active {
+      color: #6c5ce7;
+      background: #f3f2ff;
+    }
+    
+    .nav-icon {
+      font-size: 1.2rem;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+    
+    .nav-label {
+      font-size: 0.7rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <button class="back-btn" onclick="window.location.href='dashboard.html'">←</button>
+    <h1 class="header-title">Voice Analysis</h1>
+  </div>
+  
+  <div class="recording-card">
+    <div class="mic-icon" id="micButton" onclick="toggleRecording()">🎤</div>
+    <div class="recording-status" id="status">Tap to start voice analysis</div>
+    <div class="recording-instruction" id="instruction">Speak for 30 seconds to analyze your voice health</div>
+    <div class="timer" id="timer">00:00</div>
+  </div>
+  
+  <div class="analysis-results" id="results">
+    <h3 class="section-title">Voice Health Analysis</h3>
+    
+    <div class="health-indicator">
+      <div class="indicator-info">
+        <h4>Voice Clarity</h4>
+        <p>Speech articulation and pronunciation</p>
+      </div>
+      <span class="indicator-value">Excellent</span>
+    </div>
+    
+    <div class="health-indicator warning">
+      <div class="indicator-info">
+        <h4>Vocal Strain</h4>
+        <p>Signs of voice overuse or tension</p>
+      </div>
+      <span class="indicator-value">Mild</span>
+    </div>
+    
+    <div class="health-indicator">
+      <div class="indicator-info">
+        <h4>Respiratory Health</h4>
+        <p>Breathing patterns during speech</p>
+      </div>
+      <span class="indicator-value">Good</span>
+    </div>
+    
+    <div class="health-indicator">
+      <div class="indicator-info">
+        <h4>Emotional State</h4>
+        <p>Voice-based mood assessment</p>
+      </div>
+      <span class="indicator-value">Positive</span>
+    </div>
+  </div>
+  
+  <div class="voice-tips">
+    <h3 class="section-title">Voice Care Tips</h3>
+    
+    <div class="tip-item">
+      <span class="tip-icon">💧</span>
+      <div class="tip-content">
+        <h4>Stay Hydrated</h4>
+        <p>Drink plenty of water throughout the day to keep your vocal cords lubricated and healthy.</p>
+      </div>
+    </div>
+    
+    <div class="tip-item">
+      <span class="tip-icon">🗣️</span>
+      <div class="tip-content">
+        <h4>Vocal Warm-ups</h4>
+        <p>Do gentle humming or lip trills before extended speaking to prepare your voice.</p>
+      </div>
+    </div>
+    
+    <div class="tip-item">
+      <span class="tip-icon">😌</span>
+      <div class="tip-content">
+        <h4>Rest Your Voice</h4>
+        <p>Take vocal breaks during busy days to prevent strain and maintain voice quality.</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="history-section">
+    <h3 class="section-title">Recent Analyses</h3>
+    
+    <div class="history-item">
+      <span class="history-date">Today 9:15 AM</span>
+      <span class="history-score">92/100</span>
+    </div>
+    
+    <div class="history-item">
+      <span class="history-date">Yesterday 2:30 PM</span>
+      <span class="history-score">88/100</span>
+    </div>
+    
+    <div class="history-item">
+      <span class="history-date">June 20, 10:45 AM</span>
+      <span class="history-score">85/100</span>
+    </div>
+  </div>
+  
+  <nav class="bottom-nav">
+    <a href="dashboard.html" class="nav-item">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">Home</span>
+    </a>
+    <a href="wellness-index.html" class="nav-item">
+      <span class="nav-icon">📊</span>
+      <span class="nav-label">Metrics</span>
+    </a>
+    <a href="voice-analysis.html" class="nav-item active">
+      <span class="nav-icon">🎤</span>
+      <span class="nav-label">Voice</span>
+    </a>
+    <a href="settings.html" class="nav-item">
+      <span class="nav-icon">⚙️</span>
+      <span class="nav-label">Settings</span>
+    </a>
+  </nav>
+  
+  <script>
+    let isRecording = false;
+    let recordingTime = 0;
+    let timer;
+    
+    function toggleRecording() {
+      const micButton = document.getElementById('micButton');
+      const status = document.getElementById('status');
+      const instruction = document.getElementById('instruction');
+      const timerDisplay = document.getElementById('timer');
+      const results = document.getElementById('results');
+      
+      if (!isRecording) {
+        // Start recording
+        isRecording = true;
+        micButton.classList.add('recording');
+        status.textContent = 'Recording...';
+        instruction.textContent = 'Speak naturally for voice analysis';
+        recordingTime = 0;
+        
+        timer = setInterval(() => {
+          recordingTime++;
+          const minutes = Math.floor(recordingTime / 60);
+          const seconds = recordingTime % 60;
+          timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+          
+          if (recordingTime >= 30) {
+            stopRecording();
+          }
+        }, 1000);
+        
+      } else {
+        stopRecording();
+      }
+    }
+    
+    function stopRecording() {
+      isRecording = false;
+      const micButton = document.getElementById('micButton');
+      const status = document.getElementById('status');
+      const instruction = document.getElementById('instruction');
+      const results = document.getElementById('results');
+      
+      micButton.classList.remove('recording');
+      status.textContent = 'Analyzing...';
+      instruction.textContent = 'Processing your voice data';
+      clearInterval(timer);
+      
+      // Simulate analysis delay
+      setTimeout(() => {
+        status.textContent = 'Analysis Complete';
+        instruction.textContent = 'Tap to record another sample';
+        results.classList.add('show');
+        document.getElementById('timer').textContent = '00:00';
+        recordingTime = 0;
+      }, 2000);
+    }
+  </script>
+</body>
+</html>

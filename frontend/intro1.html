@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Voice Health Analysis - Digital Twin</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      box-sizing: border-box;
+    }
+    
+    .illustration {
+      width: 200px;
+      height: 200px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 60px;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(10px);
+    }
+    
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    
+    p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 3rem;
+      opacity: 0.9;
+      max-width: 300px;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+      width: 100%;
+      max-width: 300px;
+    }
+    
+    button {
+      flex: 1;
+      padding: 1rem;
+      border: none;
+      border-radius: 25px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .skip-btn {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+    
+    .skip-btn:hover {
+      background: rgba(255,255,255,0.3);
+    }
+    
+    .next-btn {
+      background: white;
+      color: #667eea;
+    }
+    
+    .next-btn:hover {
+      background: #f0f0f0;
+      transform: translateY(-2px);
+    }
+    
+    .progress {
+      position: absolute;
+      top: 2rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+    }
+    
+    .dot.active {
+      background: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="progress">
+    <div class="dot active"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+  
+  <div class="illustration">
+    🎤📊
+  </div>
+  
+  <h1>Voice Health Analysis</h1>
+  <p>Analyze your voice patterns to detect early signs of health changes and track your wellness over time.</p>
+  
+  <div class="nav-buttons">
+    <button class="skip-btn" onclick="window.location.href='dashboard.html'">Skip</button>
+    <button class="next-btn" onclick="window.location.href='intro2.html'">Next</button>
+  </div>
+</body>
+</html>
